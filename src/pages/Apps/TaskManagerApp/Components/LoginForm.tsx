@@ -1,17 +1,20 @@
 import { PATH_ROUTES } from '@/modules/Router/constants';
+import { theme } from '@/theme';
 import {
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
-  FormGroup,
   Link,
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 import { v4 } from 'uuid';
 import { useAuthStore, useAuthStoreLocalStorage } from '../store/authStore';
+import { validateLoginHandler } from '../utils';
 
 /***
  * TODO:
@@ -24,8 +27,9 @@ const LoginForm: React.FC = () => {
   const { setUser: setUserLocal } = useAuthStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [errorMessage, setErrorMessage] = useState<string | null>('TEXT');
 
-  const submitHandler = (event: React.SubmitEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const { email, password, remember } = {
@@ -34,19 +38,30 @@ const LoginForm: React.FC = () => {
       remember: formData.get('rememberMe') === 'on',
     };
 
-    if (remember) {
-      setUser({
+    const getUser = await validateLoginHandler({ email, password });
+    if (getUser.user) {
+      if (remember) {
+        setUser({
+          email,
+          password,
+          session: v4(),
+        });
+      }
+
+      setUserLocal({
         email,
         password,
         session: v4(),
       });
+
+      toast('Login successfully', { type: 'success' });
+      return;
     }
 
-    setUserLocal({
-      email,
-      password,
-      session: v4(),
-    });
+    if (getUser.error) {
+      setErrorMessage(getUser.error);
+      toast(getUser.error, { type: 'error' });
+    }
   };
 
   const redirectForgotPasswordHandler = () => {
@@ -69,30 +84,42 @@ const LoginForm: React.FC = () => {
         <div
           style={{
             display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             flexGrow: 1,
           }}
         >
-          <FormGroup
+          <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              width: '100%',
               gap: '10px',
+
+              width: '40%',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
-            <div style={{ width: '30%' }}>
+            {errorMessage && (
+              <div>
+                <Typography
+                  variant="h6"
+                  sx={{ color: theme.palette.error.main, fontSize: '12px', fontWeight: 'bold' }}
+                >
+                  {errorMessage}
+                </Typography>
+              </div>
+            )}
+            <div style={{ width: '100%' }}>
               <Typography>Email</Typography>
-              <TextField type={'email'} name="email" id="email" sx={{ width: '100%' }} />
+              <TextField type={'email'} name="email" id="email" />
             </div>
-            <div style={{ width: '30%' }}>
+            <div>
               <Typography>Password</Typography>
-              <TextField type={'password'} name="password" sx={{ width: '100%' }} />
+              <TextField type={'password'} name="password" />
             </div>
             <div
               style={{
-                width: '30%',
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -104,14 +131,15 @@ const LoginForm: React.FC = () => {
                 control={<Checkbox defaultChecked />}
                 label="Remember me"
                 name="rememberMe"
-                sx={{ width: '100%' }}
               />
-              <Link
-                sx={{ width: '100%', cursor: 'pointer', fontSize: '16px' }}
-                onClick={redirectForgotPasswordHandler}
-              >
-                Forgot Password
-              </Link>
+              <div>
+                <Link
+                  sx={{ width: '100%', cursor: 'pointer', fontSize: '16px' }}
+                  onClick={redirectForgotPasswordHandler}
+                >
+                  Forgot Password
+                </Link>
+              </div>
             </div>
 
             <div>
@@ -119,7 +147,7 @@ const LoginForm: React.FC = () => {
                 Login
               </Button>
             </div>
-          </FormGroup>
+          </Box>
         </div>
       </form>
     </div>
