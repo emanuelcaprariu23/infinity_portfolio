@@ -1,3 +1,13 @@
+import {
+  EMAIL_REGEX,
+  ERROR_MESSAGES,
+  PASSWORD_LETTER_REGEX,
+  PASSWORD_MIN_LENGTH_REGEX,
+  PASSWORD_NUMBER_REGEX,
+  PASSWORD_REGEX,
+  PASSWORD_SPECIAL_CHAR_REGEX,
+  USERS,
+} from './constants';
 import { User } from './store/authStore';
 
 const validateLoginHandler = async ({ email, password }: { email: string; password: string }) => {
@@ -7,16 +17,18 @@ const validateLoginHandler = async ({ email, password }: { email: string; passwo
 };
 
 const getUserApi = async ({ email, password }: { email: string; password: string }) => {
-  const getUser = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {
+  const response = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {
     setTimeout(() => {
       const getUser = USERS.find(x => x.email === email && x.password === password);
       const potentialUSer = USERS.find(x => x.email === email || x.password === password);
 
       if (potentialUSer && !getUser) {
+        resolve({ user: getUser, error: ERROR_MESSAGES.INCORRECT_CREDENTIALS });
         return { error: ERROR_MESSAGES.INCORRECT_CREDENTIALS };
       }
 
       if (!potentialUSer && !getUser) {
+        resolve({ user: getUser, error: ERROR_MESSAGES.USER_DOES_NOT_EXIST });
         return { error: ERROR_MESSAGES.USER_DOES_NOT_EXIST };
       }
 
@@ -25,28 +37,28 @@ const getUserApi = async ({ email, password }: { email: string; password: string
     }, 1000);
   });
 
-  return { user: getUser, error: null };
+  return { user: response.user, error: response.error };
 };
 
-const USERS = [
-  { email: 'user1@example.com', password: 'pass123' },
-  { email: 'user2@example.com', password: 'pass456' },
-  { email: 'user3@example.com', password: 'pass789' },
-  { email: 'user4@example.com', password: 'passabc' },
-  { email: 'user5@example.com', password: 'passdef' },
-  { email: 'user6@example.com', password: 'passghi' },
-  { email: 'user7@example.com', password: 'passjkl' },
-  { email: 'user8@example.com', password: 'passmno' },
-  { email: 'user9@example.com', password: 'passpqr' },
-  { email: 'user10@example.com', password: 'passstu' },
-] as User[];
+const isEmptyString = (value: string) => value.trim() === '';
+const isValidEmail = (email: string) => !isEmptyString(email) && EMAIL_REGEX.test(email);
+const isValidPassword = (password: string) =>
+  !isEmptyString(password) && PASSWORD_REGEX.test(password);
 
-const ERROR_MESSAGES = {
-  USER_DOES_NOT_EXIST: 'User does not exist!',
-  INCORRECT_CREDENTIALS: 'incorrect credentials!',
-  TOO_MANY_ATTEMPTS: 'too many attempts!',
-} as const;
+const getAuthErrorMessage = (password: string): string | null => {
+  if (!PASSWORD_MIN_LENGTH_REGEX.test(password)) return ERROR_MESSAGES.PASSWORD_MIN_LENGTH_REGEX;
+  if (!PASSWORD_LETTER_REGEX.test(password)) return ERROR_MESSAGES.PASSWORD_LETTER_REGEX;
+  if (!PASSWORD_NUMBER_REGEX.test(password)) return ERROR_MESSAGES.PASSWORD_NOT_VALID;
+  if (!PASSWORD_SPECIAL_CHAR_REGEX.test(password))
+    return ERROR_MESSAGES.PASSWORD_SPECIAL_CHAR_REGEX;
+  return null;
+};
 
-export { getUserApi, validateLoginHandler };
-
-export { ERROR_MESSAGES, USERS };
+export {
+  getAuthErrorMessage,
+  getUserApi,
+  isEmptyString,
+  isValidEmail,
+  isValidPassword,
+  validateLoginHandler,
+};
