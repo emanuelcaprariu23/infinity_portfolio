@@ -1,6 +1,6 @@
 import { PageContentI } from '@/pages/Projects/KnowledgeHub/interfaces';
 import { AuthVsAuthorization, CommonAuthFlows, WhatIsAuth } from './01.Introduction/Examples';
-import { PasswordAndSalting } from './02.PasswordBasedAuth/Examples';
+import { PasswordAndSalting, StoringUserCredClient } from './02.PasswordBasedAuth/Examples';
 
 const INTRODUCTION_TO_AUTH_PAGE_CONTENTS: PageContentI[] = [
   {
@@ -25,6 +25,11 @@ const PASSWORD_BASED_AUTH_PAGE_CONTENTS: PageContentI[] = [
     elementId: 'understanding-password-hashing-salting-example-id',
     title: 'Password Hashing & Salting',
     children: <PasswordAndSalting />,
+  },
+  {
+    elementId: 'storing-user-credentials-client-considerations-example-id',
+    title: 'Storing User Cred on Client Side',
+    children: <StoringUserCredClient />,
   },
 ];
 

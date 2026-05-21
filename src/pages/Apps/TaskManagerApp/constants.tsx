@@ -11,16 +11,16 @@ const AUTH_TASK_MANAGER_APP_CONTENTS: PageContentI[] = [
 ];
 
 const USERS = [
-  { email: 'user1@example.com', password: 'pass123' },
-  { email: 'user2@example.com', password: 'pass456' },
-  { email: 'user3@example.com', password: 'pass789' },
-  { email: 'user4@example.com', password: 'passabc' },
-  { email: 'user5@example.com', password: 'passdef' },
-  { email: 'user6@example.com', password: 'passghi' },
-  { email: 'user7@example.com', password: 'passjkl' },
-  { email: 'user8@example.com', password: 'passmno' },
-  { email: 'user9@example.com', password: 'passpqr' },
-  { email: 'user10@example.com', password: 'passstu' },
+  { email: 'user1@example.com', password: 'pass123@222' },
+  { email: 'user2@example.com', password: 'pass456!222' },
+  { email: 'user3@example.com', password: 'pass789#22' },
+  { email: 'user4@example.com', password: 'passabc$22' },
+  { email: 'user5@example.com', password: 'passdef@22' },
+  { email: 'user6@example.com', password: 'passghi@22' },
+  { email: 'user7@example.com', password: 'passjkl222@' },
+  { email: 'user8@example.com', password: 'passmno@222' },
+  { email: 'user9@example.com', password: 'passpqr@222' },
+  { email: 'user10@example.com', password: 'passstu@2222' },
 ] as User[];
 
 const ERROR_MESSAGES = {

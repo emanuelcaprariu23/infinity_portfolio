@@ -159,6 +159,7 @@ const LoginForm: React.FC = () => {
                 name="password"
                 onChange={onChange}
                 disabled={isPending}
+                autoComplete="off"
               />
             </div>
             <div
