@@ -20,7 +20,9 @@ import { useAuthStore, useAuthStoreLocalStorage } from '../store/authStore';
 import { getAuthErrorMessage, isValidEmail, isValidPassword, validateLoginHandler } from '../utils';
 
 /***
- * TODO:
+ * TODO: DO SOME RESEARCH + TRY TO IMPLEMENT
+ * 1. HTTPS Simulation: If you're working on a local development environment, simulate HTTPS by setting up a self-signed certificate. This will allow you to test your application with HTTPS enabled.
+ * 2. CSP Implementation: Research Content Security Policy (CSP) and implement a basic CSP in a test HTML file to restrict script sources. Experiment with different CSP directives to understand how they affect the loading of resources.
  */
 
 const LoginForm: React.FC = () => {
