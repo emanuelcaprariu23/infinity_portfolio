@@ -70,8 +70,14 @@ const LoginForm: React.FC = () => {
     });
   };
 
-  const redirectForgotPasswordHandler = () => {
+  const redirectToForgotPasswordHandler = () => {
     navigate(`${pathname}/${PATH_ROUTES.FORGOT_PASSWORD}`, {
+      replace: true,
+    });
+  };
+
+  const redirectToRegisterHandler = () => {
+    navigate(`${pathname}/${PATH_ROUTES.REGISTER_PAGE}`, {
       replace: true,
     });
   };
@@ -174,10 +180,28 @@ const LoginForm: React.FC = () => {
                 alignItems: 'center',
               }}
             >
-              <FormControlLabel
-                control={<Checkbox name="rememberMe" defaultChecked disabled={isPending} />}
-                label="Remember me"
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Link
+                  sx={{
+                    width: '100%',
+                    cursor: isPending ? 'default' : 'pointer',
+                    fontSize: '16px',
+                    pointerEvents: isPending ? 'none' : 'auto',
+                  }}
+                  onClick={redirectToRegisterHandler}
+                >
+                  {`  Don't have an account? register now`}
+                </Link>
+                <FormControlLabel
+                  control={<Checkbox name="rememberMe" defaultChecked disabled={isPending} />}
+                  label="Remember me"
+                />
+              </div>
               <div>
                 <Link
                   sx={{
@@ -186,7 +210,7 @@ const LoginForm: React.FC = () => {
                     fontSize: '16px',
                     pointerEvents: isPending ? 'none' : 'auto',
                   }}
-                  onClick={redirectForgotPasswordHandler}
+                  onClick={redirectToForgotPasswordHandler}
                 >
                   Forgot Password
                 </Link>

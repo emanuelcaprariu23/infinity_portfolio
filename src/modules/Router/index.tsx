@@ -56,8 +56,14 @@ const ForgotPassword = lazy(() =>
     default: module.ForgotPassword,
   })),
 );
+const RegisterPage = lazy(() =>
+  import('@/pages/Apps/TaskManagerApp/Components/RegisterPage.js').then(module => ({
+    default: module.RegisterPage,
+  })),
+);
 
 const knowledgeHubPath = convertToPathURI([PATH_ROUTES.PROJECTS, PATH_ROUTES.KNOWLEDGE_HUB, '*']);
+
 const taskManagerPath = convertToPathURI([
   PATH_ROUTES.APPLICATIONS,
   PATH_ROUTES.TASK_MANAGER_APP,
@@ -65,6 +71,7 @@ const taskManagerPath = convertToPathURI([
 ]);
 
 const forgotPassPath = taskManagerPath.replace('*', PATH_ROUTES.FORGOT_PASSWORD);
+const registerPath = taskManagerPath.replace('*', PATH_ROUTES.REGISTER_PAGE);
 
 const CustomRouter = () => {
   return (
@@ -95,6 +102,7 @@ const CustomRouter = () => {
                 />
                 <Route path={taskManagerPath} element={<TaskManagerApp />} />
                 <Route path={forgotPassPath} element={<ForgotPassword />} />
+                <Route path={registerPath} element={<RegisterPage />} />
 
                 {/* In this block, we should wrap all components into our game context, and use State only in game scope*/}
                 <Route

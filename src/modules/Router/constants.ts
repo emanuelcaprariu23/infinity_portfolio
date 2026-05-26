@@ -8,4 +8,9 @@ export enum PATH_ROUTES {
   APPLICATIONS = 'applications',
   TASK_MANAGER_APP = 'task-manager-app',
   FORGOT_PASSWORD = 'forgot-password',
+  REGISTER_PAGE = 'register',
 }
+
+// TODO: ADD PUBLIC + PRIVATE ROUTES
+// TODO: REFACTOR TO HANDLE PUBLIC + PRIVATE ROUTES
+// const PUBLIC_ROUTES = {} as const;
