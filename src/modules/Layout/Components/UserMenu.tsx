@@ -4,7 +4,7 @@ import {
 } from '@/pages/Apps/TaskManagerApp/store/authStore';
 import { Spinner } from '@/Shared/Components';
 import { Logout } from '@mui/icons-material';
-import { Avatar, Backdrop, Divider, ListItemIcon, Menu, MenuItem } from '@mui/material';
+import { Avatar, Backdrop, Divider, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
 import React, { useTransition } from 'react';
 
 interface UserMenuProps {
@@ -71,19 +71,32 @@ const UserMenu: React.FC<UserMenuProps> = ({ handleClose, anchorEl }) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={logoutHandler}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        <div style={{ width: '230px' }}>
+          <MenuItem
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }}
+            disableRipple
+            style={{ cursor: 'default' }}
+          >
+            <Typography>{user?.email} </Typography>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Avatar /> Profile
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Avatar /> My account
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={logoutHandler}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </div>
       </Menu>
 
       <Backdrop

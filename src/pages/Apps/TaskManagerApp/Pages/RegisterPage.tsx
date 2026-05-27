@@ -1,22 +1,31 @@
+import { SLASH_SPLIT_STRING } from '@/pages/Projects/KnowledgeHub/Contents/Tabs/pages/Hooks/contents';
 import { Spinner } from '@/Shared/Components';
 import { theme } from '@/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Box, Button, Typography } from '@mui/material';
-import { LogIn } from 'lucide-react';
 import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { v4 } from 'uuid';
 import FormField from '../Components/FormField';
 import { RegisterDataT, registerSchema } from '../interfaces';
 import { useAuthStore, useAuthStoreLocalStorage } from '../store/authStore';
-import { validateLoginHandler } from '../utils';
+import { validateRegisterHandler } from '../utils';
+
+const defaultRegisterValues: RegisterDataT = {
+  email: '',
+  password: '',
+  rePassword: '',
+};
 
 const RegisterPage: React.FC = () => {
   const { setUser } = useAuthStoreLocalStorage();
   const { setUser: setUserLocal } = useAuthStore();
 
   const [isPending, startTransition] = useTransition();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const {
     register,
@@ -25,22 +34,31 @@ const RegisterPage: React.FC = () => {
     setError,
   } = useForm<RegisterDataT>({
     resolver: zodResolver(registerSchema),
+    defaultValues: defaultRegisterValues,
+    shouldFocusError: false,
   });
 
   const submitHandler = async (data: RegisterDataT) => {
-    const { email, password, rePassword } = data;
+    const { email, password } = data;
 
     startTransition(async () => {
-      const getUser = await validateLoginHandler({ email, password });
+      const getUser = await validateRegisterHandler({ email, password });
 
       if (getUser.user) {
-        setUserLocal({
+        const user = {
           email,
           password,
           session: v4(),
-        });
+        };
+
+        setUserLocal(user);
+        setUser(user);
 
         toast('Your account has been created!', { type: 'success' });
+        const backward =
+          SLASH_SPLIT_STRING +
+          pathname.split(SLASH_SPLIT_STRING).slice(1, -1).join(SLASH_SPLIT_STRING);
+        navigate(backward ? `${backward}` : SLASH_SPLIT_STRING, { replace: true });
       }
 
       if (getUser.error) {
@@ -49,28 +67,6 @@ const RegisterPage: React.FC = () => {
       }
     });
   };
-
-  // const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
-  //   const { name, value } = e.target;
-  //   setErrorMessage(null);
-
-  //   if (name === 'email') {
-  //     if (!isValidEmail(value)) {
-  //       setErrorMessage(ERROR_MESSAGES.EMAIL_NOT_VALID);
-  //     }
-  //     return;
-  //   }
-
-  //   if (name === 'password') {
-  //     if (!isValidPassword(value)) {
-  //       const getMessage = getAuthErrorMessage(value);
-  //       setErrorMessage(getMessage);
-  //     }
-  //     return;
-  //   }
-  // };
-
-  console.log({ errors });
 
   return (
     <div style={{ display: 'flex', flexGrow: 1 }}>
@@ -143,7 +139,7 @@ const RegisterPage: React.FC = () => {
               label={'Confirm Password'}
               required
               disabled={isPending}
-              error={errors.password?.message}
+              error={errors.rePassword?.message}
               type={'password'}
             />
 
@@ -154,7 +150,8 @@ const RegisterPage: React.FC = () => {
                 disabled={isPending}
                 sx={{ display: 'flex', flexDirection: 'row', gap: '5px', alignItems: 'center' }}
               >
-                {isPending ? <Spinner size={'1.2em'} /> : <LogIn size={'1.2em'} />} Register
+                {isPending || (isSubmitting && <Spinner size={'1.2em'} />)}
+                Register
               </Button>
             </div>
           </Box>

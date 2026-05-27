@@ -79,9 +79,7 @@ const LoginForm: React.FC = () => {
   };
 
   const redirectToRegisterHandler = () => {
-    navigate(`${pathname}/${PATH_ROUTES.REGISTER_PAGE}`, {
-      replace: true,
-    });
+    navigate(`${PATH_ROUTES.REGISTER_PAGE}`, {});
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {

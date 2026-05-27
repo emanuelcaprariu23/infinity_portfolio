@@ -1,4 +1,4 @@
-import { PageContentI } from '../interfaces';
+import { PageContentI } from '@/pages/Projects/KnowledgeHub/interfaces';
 import { UseCustomBasic } from './Custom/Examples';
 import {
   ErrorHandleExample,
@@ -45,6 +45,7 @@ import {
 } from './UseTransition/Examples';
 
 const DASH_SPLIT_STRING = '-';
+const SLASH_SPLIT_STRING = '/';
 
 const USE_STATE_PAGE_CONTENTS: PageContentI[] = [
   {
@@ -326,6 +327,7 @@ const USE_CUSTOM_HOOK_PAGE_CONTENTS: PageContentI[] = [
 
 export {
   DASH_SPLIT_STRING,
+  SLASH_SPLIT_STRING,
   USE_ACTION_STATE_HOOK_PAGE_CONTENTS,
   USE_CALLBACK_PAGE_CONTENTS,
   USE_CONTEXT_PAGE_CONTENTS,

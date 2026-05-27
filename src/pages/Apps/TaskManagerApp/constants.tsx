@@ -25,13 +25,15 @@ const USERS = [
 
 const ERROR_MESSAGES = {
   USER_DOES_NOT_EXIST: 'User does not exist!',
-  INCORRECT_CREDENTIALS: 'incorrect credentials!',
-  TOO_MANY_ATTEMPTS: 'too many attempts!',
-  EMAIL_NOT_VALID: 'email not valid!',
-  PASSWORD_NOT_VALID: 'password not valid!',
-  PASSWORD_MIN_LENGTH_REGEX: 'password must has minimum 8 characters!',
-  PASSWORD_LETTER_REGEX: 'password must contain 1 letter character at least!',
-  PASSWORD_SPECIAL_CHAR_REGEX: 'password must contain 1 special character at least!',
+  USER_EXISTS: 'User exists!',
+  INCORRECT_CREDENTIALS: 'Incorrect credentials!',
+  TOO_MANY_ATTEMPTS: 'Too many attempts!',
+  EMAIL_NOT_VALID: 'Email is not valid!',
+  PASSWORD_NOT_VALID: 'Password not valid!',
+  PASSWORD_MIN_LENGTH_REGEX: 'Password must has minimum 8 characters!',
+  PASSWORD_LETTER_REGEX: 'Password must contain 1 letter character at least!',
+  PASSWORD_SPECIAL_CHAR_REGEX: 'Password must contain 1 special character at least!',
+  PASSWORDS_DON_T_MATCH: `Passwords don't match!`,
 } as const;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

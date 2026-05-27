@@ -16,6 +16,18 @@ const validateLoginHandler = async ({ email, password }: { email: string; passwo
   return getUser;
 };
 
+const validateRegisterHandler = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const getUser = await registerUserApi({ email, password });
+
+  return getUser;
+};
+
 const getUserApi = async ({ email, password }: { email: string; password: string }) => {
   const response = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {
     setTimeout(() => {
@@ -34,6 +46,30 @@ const getUserApi = async ({ email, password }: { email: string; password: string
 
       resolve({ user: getUser, error: null });
       return { user: getUser };
+    }, 1000);
+  });
+
+  return { user: response.user, error: response.error };
+};
+
+const registerUserApi = async ({ email, password }: { email: string; password: string }) => {
+  const response = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {
+    setTimeout(() => {
+      const addUser = {
+        email: email,
+        password,
+      };
+      const getUser = USERS.find(x => x.email === email);
+
+      if (getUser) {
+        resolve({ user: undefined, error: ERROR_MESSAGES.USER_EXISTS });
+        return { error: ERROR_MESSAGES.USER_EXISTS };
+      }
+
+      USERS.push(addUser);
+
+      resolve({ user: addUser, error: null });
+      return { user: addUser };
     }, 1000);
   });
 
@@ -61,4 +97,5 @@ export {
   isValidEmail,
   isValidPassword,
   validateLoginHandler,
+  validateRegisterHandler,
 };
