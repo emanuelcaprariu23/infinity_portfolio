@@ -1,29 +1,34 @@
 import { Spinner } from '@/Shared/Components';
 import { theme } from '@/theme';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box, Button, Typography } from '@mui/material';
 import { LogIn } from 'lucide-react';
-import React, { useState, useTransition } from 'react';
+import React, { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { v4 } from 'uuid';
-import { ERROR_MESSAGES } from '../constants';
+import FormField from '../Components/FormField';
+import { RegisterDataT, registerSchema } from '../interfaces';
 import { useAuthStore, useAuthStoreLocalStorage } from '../store/authStore';
-import { getAuthErrorMessage, isValidEmail, isValidPassword, validateLoginHandler } from '../utils';
+import { validateLoginHandler } from '../utils';
 
 const RegisterPage: React.FC = () => {
   const { setUser } = useAuthStoreLocalStorage();
   const { setUser: setUserLocal } = useAuthStore();
 
-  const [errorMessage, setErrorMessage] = useState<string | null>('');
   const [isPending, startTransition] = useTransition();
 
-  const submitHandler = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const { email, password, rePassword } = {
-      email: formData.get('email')?.toString() || '',
-      password: formData.get('password')?.toString() || '',
-      rePassword: formData.get('re-password')?.toString() || '',
-    };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm<RegisterDataT>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const submitHandler = async (data: RegisterDataT) => {
+    const { email, password, rePassword } = data;
 
     startTransition(async () => {
       const getUser = await validateLoginHandler({ email, password });
@@ -39,37 +44,40 @@ const RegisterPage: React.FC = () => {
       }
 
       if (getUser.error) {
-        setErrorMessage(getUser.error);
+        setError('form', { message: getUser.error });
         toast(getUser.error, { type: 'error' });
       }
     });
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
-    const { name, value } = e.target;
-    setErrorMessage(null);
+  // const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+  //   const { name, value } = e.target;
+  //   setErrorMessage(null);
 
-    if (name === 'email') {
-      if (!isValidEmail(value)) {
-        setErrorMessage(ERROR_MESSAGES.EMAIL_NOT_VALID);
-      }
-      return;
-    }
+  //   if (name === 'email') {
+  //     if (!isValidEmail(value)) {
+  //       setErrorMessage(ERROR_MESSAGES.EMAIL_NOT_VALID);
+  //     }
+  //     return;
+  //   }
 
-    if (name === 'password') {
-      if (!isValidPassword(value)) {
-        const getMessage = getAuthErrorMessage(value);
-        setErrorMessage(getMessage);
-      }
-      return;
-    }
-  };
+  //   if (name === 'password') {
+  //     if (!isValidPassword(value)) {
+  //       const getMessage = getAuthErrorMessage(value);
+  //       setErrorMessage(getMessage);
+  //     }
+  //     return;
+  //   }
+  // };
+
+  console.log({ errors });
+
   return (
     <div style={{ display: 'flex', flexGrow: 1 }}>
       <form
         method="post"
         action=""
-        onSubmit={submitHandler}
+        onSubmit={handleSubmit(submitHandler)}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -95,7 +103,7 @@ const RegisterPage: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            {errorMessage && (
+            {errors.form && (
               <div
                 style={{
                   display: 'flex',
@@ -108,42 +116,36 @@ const RegisterPage: React.FC = () => {
                   variant="h6"
                   sx={{ color: theme.palette.error.main, fontSize: '14px', fontWeight: 'bold' }}
                 >
-                  {errorMessage}
+                  {errors.form?.message}
                 </Typography>
               </div>
             )}
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Typography>Email</Typography>
-              <TextField
-                type={'email'}
-                name="email"
-                id="email"
-                onChange={onChange}
-                disabled={isPending}
-              />
-            </div>
 
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Typography>Password</Typography>
-              <TextField
-                type={'password'}
-                name="password"
-                onChange={onChange}
-                disabled={isPending}
-                autoComplete="off"
-              />
-            </div>
+            <FormField
+              field={register('email')}
+              label={'Email'}
+              required
+              disabled={isPending}
+              error={errors.email?.message}
+              type={'email'}
+            />
 
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Typography>Confirm Password</Typography>
-              <TextField
-                type={'password'}
-                name="re-password"
-                onChange={onChange}
-                disabled={isPending}
-                autoComplete="off"
-              />
-            </div>
+            <FormField
+              field={register('password')}
+              label={'Password'}
+              required
+              disabled={isPending}
+              error={errors.password?.message}
+              type={'password'}
+            />
+            <FormField
+              field={register('rePassword')}
+              label={'Confirm Password'}
+              required
+              disabled={isPending}
+              error={errors.password?.message}
+              type={'password'}
+            />
 
             <div>
               <Button

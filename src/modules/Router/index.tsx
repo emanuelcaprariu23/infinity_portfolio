@@ -52,12 +52,12 @@ const TaskManagerApp = lazy(() =>
 );
 
 const ForgotPassword = lazy(() =>
-  import('@/pages/Apps/TaskManagerApp/Components/ForgotPassword.js').then(module => ({
+  import('@/pages/Apps/TaskManagerApp/Pages/ForgotPassword.js').then(module => ({
     default: module.ForgotPassword,
   })),
 );
 const RegisterPage = lazy(() =>
-  import('@/pages/Apps/TaskManagerApp/Components/RegisterPage.js').then(module => ({
+  import('@/pages/Apps/TaskManagerApp/Pages/RegisterPage.js').then(module => ({
     default: module.RegisterPage,
   })),
 );

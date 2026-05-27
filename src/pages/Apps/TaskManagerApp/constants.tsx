@@ -41,6 +41,10 @@ const PASSWORD_NUMBER_REGEX = /\d/;
 const PASSWORD_SPECIAL_CHAR_REGEX = /[^A-Za-z0-9]/;
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
+const TASK_MANAGER_APP_LOCAL_STORAGE_KEYS = {
+  taskManagerAppTodos: 'taskManagerAppTodos',
+} as const;
+
 export {
   AUTH_TASK_MANAGER_APP_CONTENTS,
   EMAIL_REGEX,
@@ -50,5 +54,6 @@ export {
   PASSWORD_NUMBER_REGEX,
   PASSWORD_REGEX,
   PASSWORD_SPECIAL_CHAR_REGEX,
+  TASK_MANAGER_APP_LOCAL_STORAGE_KEYS,
   USERS,
 };

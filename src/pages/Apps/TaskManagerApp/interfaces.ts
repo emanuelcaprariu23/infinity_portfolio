@@ -1,5 +1,24 @@
-const TASK_MANAGER_APP_LOCAL_STORAGE_KEYS = {
-  taskManagerAppTodos: 'taskManagerAppTodos',
-} as const;
+import { z } from 'zod';
 
-export { TASK_MANAGER_APP_LOCAL_STORAGE_KEYS };
+const loginSchema = z.object({
+  email: z.email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+  rememberMe: z.boolean().optional(),
+});
+
+const registerSchema = z
+  .object({
+    email: z.email('Invalid email address'),
+    password: z.string().min(1, 'Password is required').regex(/R/, { error: '' }),
+    rePassword: z.string().min(1, 'Re-Password is required'),
+  })
+  .refine(data => data.password === data.rePassword, {
+    error: `Password don't match!`,
+    path: ['form'],
+  });
+
+type LoginDataT = z.infer<typeof loginSchema>;
+type RegisterDataT = z.infer<typeof registerSchema>;
+
+export { loginSchema, registerSchema };
+export type { LoginDataT, RegisterDataT };

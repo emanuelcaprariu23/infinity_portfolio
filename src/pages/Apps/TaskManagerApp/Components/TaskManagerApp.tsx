@@ -4,7 +4,7 @@ import { theme } from '@/theme';
 import { Box, IconButton, TextField, Typography } from '@mui/material';
 import { SendHorizontal, Trash } from 'lucide-react';
 import React, { startTransition, useOptimistic, useState } from 'react';
-import { TASK_MANAGER_APP_LOCAL_STORAGE_KEYS } from '../interfaces';
+import { TASK_MANAGER_APP_LOCAL_STORAGE_KEYS } from '../constants';
 
 interface Todo {
   id: number;

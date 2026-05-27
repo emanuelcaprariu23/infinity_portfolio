@@ -1,7 +1,7 @@
 import { FlexWithGapBox } from '@/Shared/Utils/Helpers/styled-components';
 import React from 'react';
-import ApplicationContent from './Components/ApplicationContent';
-import LoginForm from './Components/LoginForm';
+import ApplicationContent from './Pages/ApplicationContent';
+import LoginForm from './Pages/LoginForm';
 import { useAuthStore, useAuthStoreLocalStorage } from './store/authStore';
 
 const TaskManagerAppContent: React.FC = () => {
