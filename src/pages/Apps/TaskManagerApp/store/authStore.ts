@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { produce } from 'immer';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -8,6 +9,7 @@ export interface User {
   name?: string;
   password: string;
   session?: string | null;
+  isVerified?: boolean;
 }
 
 export interface AuthState {
@@ -19,6 +21,7 @@ export interface AuthState {
   clear: () => void;
   isAuthenticated: () => boolean;
   updateValidationCode: (value: string) => void;
+  validateUser: (value: boolean) => void;
 }
 
 // Store creator function - shared between both stores
@@ -38,14 +41,28 @@ const createAuthStore = (set: any, get: any): AuthState => ({
     return full;
   },
   updateSession: (session: string | null) => {
-    const user = get().user;
-    if (!user) return;
-    set({ user: { ...user, session } });
+    set(
+      produce((draft: AuthState) => {
+        if (draft.user) {
+          draft.user.session = session;
+        }
+      }),
+    );
   },
   clear: () => set({ user: null }),
   isAuthenticated: () => !!(get().user && get().user!.session),
   updateValidationCode: (value: string) => {
     set({ validationCode: value });
+  },
+  validateUser: (value: boolean) => {
+    set(
+      produce((draft: AuthState) => {
+        console.log(draft);
+        if (draft.user) {
+          draft.user.isVerified = value;
+        }
+      }),
+    );
   },
 });
 
@@ -61,6 +78,7 @@ const useAuthStoreLocalStorage = create<AuthState>()(
             name: state.user.name,
             session: state.user.session ?? null,
             userId: state.user.userId,
+            isVerified: state.user.isVerified,
           }
         : null,
       validationCode: state.validationCode,

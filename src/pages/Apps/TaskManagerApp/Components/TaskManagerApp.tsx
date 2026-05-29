@@ -4,7 +4,9 @@ import { theme } from '@/theme';
 import { Box, IconButton, TextField, Typography } from '@mui/material';
 import { SendHorizontal, Trash } from 'lucide-react';
 import React, { startTransition, useOptimistic, useState } from 'react';
-import { TASK_MANAGER_APP_LOCAL_STORAGE_KEYS } from '../constants';
+import { toast } from 'react-toastify';
+import { ERROR_MESSAGES, TASK_MANAGER_APP_LOCAL_STORAGE_KEYS } from '../constants';
+import { useAuthHook } from '../hooks/useAuthHook';
 
 interface Todo {
   id: number;
@@ -80,6 +82,8 @@ const TaskManagerApp: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [optimisticTodos, optimisticDispatch] = useOptimistic(todos, todosReducer);
 
+  const { user } = useAuthHook();
+
   const handleAdd = (text: string) => {
     startTransition(async () => {
       optimisticDispatch({ type: 'add', text }); // UI updates immediately
@@ -132,10 +136,18 @@ const TaskManagerApp: React.FC = () => {
     ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
   ) => {
     const { value } = ev.target;
+
     setNewTodoValue(value);
   };
 
   const addNewTodoOnClickHandler = () => {
+    if (!user?.isVerified) {
+      toast(ERROR_MESSAGES.VALIDATE_USER, {
+        type: 'info',
+      });
+      return;
+    }
+
     handleAdd(newTodoValue);
     setNewTodoValue('');
   };
@@ -201,7 +213,7 @@ const TaskManagerApp: React.FC = () => {
         />
         <IconButton
           sx={{ width: '50px', height: '50px' }}
-          disabled={optimisticTodos.some(x => x.sending)}
+          disabled={optimisticTodos.some(x => x.sending) || !user?.isVerified}
           onClick={addNewTodoOnClickHandler}
         >
           <SendHorizontal />

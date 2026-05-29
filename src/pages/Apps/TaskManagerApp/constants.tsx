@@ -35,6 +35,7 @@ const ERROR_MESSAGES = {
   PASSWORD_LETTER_REGEX: 'Password must contain 1 letter character at least!',
   PASSWORD_SPECIAL_CHAR_REGEX: 'Password must contain 1 special character at least!',
   PASSWORDS_DON_T_MATCH: `Passwords don't match!`,
+  VALIDATE_USER: `Verify email to validate your account!`,
 } as const;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

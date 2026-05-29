@@ -5,7 +5,13 @@ import { useAuthStore, useAuthStoreLocalStorage, User } from '../store/authStore
 import { generateUserId } from '../utils';
 
 const useAuthHook = () => {
-  const { setUser, clear, user: storageUser } = useAuthStoreLocalStorage();
+  const {
+    setUser,
+    clear,
+    user: storageUser,
+    validateUser,
+    updateValidationCode,
+  } = useAuthStoreLocalStorage();
   const { setUser: setUserLocal, clear: clearLocal, user: localUser } = useAuthStore();
   const [isPendingLogout, startTransition] = useTransition();
 
@@ -26,6 +32,7 @@ const useAuthHook = () => {
           email,
           password,
           session: v4(),
+          isVerified: true,
         });
       }
 
@@ -33,7 +40,11 @@ const useAuthHook = () => {
         email,
         password,
         session: v4(),
+        isVerified: true,
       });
+
+      validateUser(true);
+      updateValidationCode('');
     }
 
     return data;
@@ -48,6 +59,7 @@ const useAuthHook = () => {
         password,
         session: v4(),
         userId: generateUserId(),
+        isVerified: false,
       } as User;
 
       setUserLocal(user);
