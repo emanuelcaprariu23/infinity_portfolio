@@ -2,6 +2,7 @@ import { getRandomArbitrary } from '@/Shared/Utils/Helpers/global-utils';
 import {
   EMAIL_REGEX,
   ERROR_MESSAGES,
+  PASSWORD_ERROR_MESSAGES,
   PASSWORD_LETTER_REGEX,
   PASSWORD_MIN_LENGTH_REGEX,
   PASSWORD_NUMBER_REGEX,
@@ -66,12 +67,13 @@ const isValidEmail = (email: string) => !isEmptyString(email) && EMAIL_REGEX.tes
 const isValidPassword = (password: string) =>
   !isEmptyString(password) && PASSWORD_REGEX.test(password);
 
+//TODO: REMOVE THIS
 const getAuthErrorMessage = (password: string): string | null => {
-  if (!PASSWORD_MIN_LENGTH_REGEX.test(password)) return ERROR_MESSAGES.PASSWORD_MIN_LENGTH_REGEX;
-  if (!PASSWORD_LETTER_REGEX.test(password)) return ERROR_MESSAGES.PASSWORD_LETTER_REGEX;
-  if (!PASSWORD_NUMBER_REGEX.test(password)) return ERROR_MESSAGES.PASSWORD_NOT_VALID;
+  if (!PASSWORD_MIN_LENGTH_REGEX.test(password)) return PASSWORD_ERROR_MESSAGES.MIN_LENGTH_REGEX;
+  if (!PASSWORD_LETTER_REGEX.test(password)) return PASSWORD_ERROR_MESSAGES.LETTER_REGEX;
+  if (!PASSWORD_NUMBER_REGEX.test(password)) return PASSWORD_ERROR_MESSAGES.NOT_VALID;
   if (!PASSWORD_SPECIAL_CHAR_REGEX.test(password))
-    return ERROR_MESSAGES.PASSWORD_SPECIAL_CHAR_REGEX;
+    return PASSWORD_ERROR_MESSAGES.SPECIAL_CHAR_REGEX;
   return null;
 };
 

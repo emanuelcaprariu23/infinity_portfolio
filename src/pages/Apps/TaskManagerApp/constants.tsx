@@ -30,12 +30,24 @@ const ERROR_MESSAGES = {
   INCORRECT_CREDENTIALS: 'Incorrect credentials!',
   TOO_MANY_ATTEMPTS: 'Too many attempts!',
   EMAIL_NOT_VALID: 'Email is not valid!',
-  PASSWORD_NOT_VALID: 'Password not valid!',
-  PASSWORD_MIN_LENGTH_REGEX: 'Password must has minimum 8 characters!',
-  PASSWORD_LETTER_REGEX: 'Password must contain 1 letter character at least!',
-  PASSWORD_SPECIAL_CHAR_REGEX: 'Password must contain 1 special character at least!',
-  PASSWORDS_DON_T_MATCH: `Passwords don't match!`,
+
   VALIDATE_USER: `Verify email to validate your account!`,
+} as const;
+
+const PASSWORD_ERROR_MESSAGES = {
+  REQUIRED: 'Password is required',
+  WEAK: 'Password is weak',
+  MEDIUM: 'Password is medium',
+  NOT_VALID: 'Password not valid!',
+  MIN_LENGTH_REGEX: 'Password must has minimum 8 characters!',
+  LETTER_REGEX: 'Password must contain 1 letter character at least!',
+  SPECIAL_CHAR_REGEX: 'Password must contain 1 special character at least!',
+  DON_T_MATCH: `Passwords don't match!`,
+} as const;
+
+const PASSWORD_STRENGTH = {
+  WEAK: PASSWORD_ERROR_MESSAGES.WEAK,
+  MEDIUM: PASSWORD_ERROR_MESSAGES.MEDIUM,
 } as const;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,11 +65,13 @@ export {
   AUTH_TASK_MANAGER_APP_CONTENTS,
   EMAIL_REGEX,
   ERROR_MESSAGES,
+  PASSWORD_ERROR_MESSAGES,
   PASSWORD_LETTER_REGEX,
   PASSWORD_MIN_LENGTH_REGEX,
   PASSWORD_NUMBER_REGEX,
   PASSWORD_REGEX,
   PASSWORD_SPECIAL_CHAR_REGEX,
+  PASSWORD_STRENGTH,
   TASK_MANAGER_APP_LOCAL_STORAGE_KEYS,
   USERS,
 };
