@@ -70,9 +70,6 @@ const useAuthHook = () => {
   };
 
   const logoutHandler = async () => {
-    clear();
-    clearLocal();
-
     startTransition(async () => {
       await new Promise(resolve => {
         setTimeout(() => {
