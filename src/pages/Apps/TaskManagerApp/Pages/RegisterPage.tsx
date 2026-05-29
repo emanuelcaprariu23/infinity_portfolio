@@ -7,11 +7,9 @@ import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-import { v4 } from 'uuid';
 import FormField from '../Components/FormField';
+import { useAuthHook } from '../hooks/useAuthHook';
 import { RegisterDataT, registerSchema } from '../interfaces';
-import { useAuthStore, useAuthStoreLocalStorage } from '../store/authStore';
-import { validateRegisterHandler } from '../utils';
 
 const defaultRegisterValues: RegisterDataT = {
   email: '',
@@ -20,8 +18,7 @@ const defaultRegisterValues: RegisterDataT = {
 };
 
 const RegisterPage: React.FC = () => {
-  const { setUser } = useAuthStoreLocalStorage();
-  const { setUser: setUserLocal } = useAuthStore();
+  const { registerHandler } = useAuthHook();
 
   const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
@@ -42,18 +39,9 @@ const RegisterPage: React.FC = () => {
     const { email, password } = data;
 
     startTransition(async () => {
-      const getUser = await validateRegisterHandler({ email, password });
+      const data = await registerHandler({ email, password });
 
-      if (getUser.user) {
-        const user = {
-          email,
-          password,
-          session: v4(),
-        };
-
-        setUserLocal(user);
-        setUser(user);
-
+      if (data.user) {
         toast('Your account has been created!', { type: 'success' });
         const backward =
           SLASH_SPLIT_STRING +
@@ -61,9 +49,9 @@ const RegisterPage: React.FC = () => {
         navigate(backward ? `${backward}` : SLASH_SPLIT_STRING, { replace: true });
       }
 
-      if (getUser.error) {
-        setError('form', { message: getUser.error });
-        toast(getUser.error, { type: 'error' });
+      if (data.error) {
+        setError('form', { message: data.error });
+        toast(data.error, { type: 'error' });
       }
     });
   };

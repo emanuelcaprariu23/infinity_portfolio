@@ -10,24 +10,6 @@ import {
 } from './constants';
 import { User } from './store/authStore';
 
-const validateLoginHandler = async ({ email, password }: { email: string; password: string }) => {
-  const getUser = await getUserApi({ email, password });
-
-  return getUser;
-};
-
-const validateRegisterHandler = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
-  const getUser = await registerUserApi({ email, password });
-
-  return getUser;
-};
-
 const getUserApi = async ({ email, password }: { email: string; password: string }) => {
   const response = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {
     setTimeout(() => {
@@ -55,10 +37,12 @@ const getUserApi = async ({ email, password }: { email: string; password: string
 const registerUserApi = async ({ email, password }: { email: string; password: string }) => {
   const response = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {
     setTimeout(() => {
+      const randomId = generateUserId();
       const addUser = {
         email: email,
         password,
-      };
+        userId: randomId,
+      } as User;
       const getUser = USERS.find(x => x.email === email);
 
       if (getUser) {
@@ -90,12 +74,23 @@ const getAuthErrorMessage = (password: string): string | null => {
   return null;
 };
 
+function getRandomArbitrary(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
+
+const generateUserId = () => {
+  const random = Array.from(Array(10))
+    .map(_ => getRandomArbitrary(0, 100))
+    .join();
+  return `user-`.concat(random);
+};
+
 export {
+  generateUserId,
   getAuthErrorMessage,
   getUserApi,
   isEmptyString,
   isValidEmail,
   isValidPassword,
-  validateLoginHandler,
-  validateRegisterHandler,
+  registerUserApi,
 };

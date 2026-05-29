@@ -1,7 +1,4 @@
-import {
-  useAuthStore,
-  useAuthStoreLocalStorage,
-} from '@/pages/Apps/TaskManagerApp/store/authStore';
+import { useAuthHook } from '@/pages/Apps/TaskManagerApp/hooks/useAuthHook';
 import { theme } from '@/theme';
 import { Avatar, IconButton } from '@mui/material';
 import { UserRound } from 'lucide-react';
@@ -10,8 +7,7 @@ import UserMenu from './UserMenu';
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { user } = useAuthStoreLocalStorage();
-  const { user: localUser } = useAuthStore();
+  const { user } = useAuthHook();
 
   const open = Boolean(anchorEl);
 
@@ -38,7 +34,7 @@ const Header = () => {
           marginRight: '10px',
         }}
       >
-        {(user || localUser) && (
+        {user && (
           <IconButton
             size="medium"
             aria-controls={open ? 'account-menu' : undefined}

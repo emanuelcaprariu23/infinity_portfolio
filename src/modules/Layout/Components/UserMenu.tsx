@@ -1,11 +1,8 @@
-import {
-  useAuthStore,
-  useAuthStoreLocalStorage,
-} from '@/pages/Apps/TaskManagerApp/store/authStore';
+import { useAuthHook } from '@/pages/Apps/TaskManagerApp/hooks/useAuthHook';
 import { Spinner } from '@/Shared/Components';
 import { Logout } from '@mui/icons-material';
 import { Avatar, Backdrop, Divider, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';
-import React, { useTransition } from 'react';
+import React from 'react';
 
 interface UserMenuProps {
   handleClose: () => void;
@@ -13,27 +10,8 @@ interface UserMenuProps {
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ handleClose, anchorEl }) => {
-  const { user, clear } = useAuthStoreLocalStorage();
-  const { user: localUser, clear: clearLocal } = useAuthStore();
-  const [isPendingLogout, startTransition] = useTransition();
+  const { isPendingLogout, logoutHandler, user } = useAuthHook();
 
-  const logoutHandler = () => {
-    startTransition(async () => {
-      await new Promise(resolve => {
-        setTimeout(() => {
-          if (user) {
-            resolve(true);
-            clear();
-          }
-
-          if (localUser) {
-            resolve(true);
-            clearLocal();
-          }
-        }, 1000);
-      });
-    });
-  };
   return (
     <>
       <Menu

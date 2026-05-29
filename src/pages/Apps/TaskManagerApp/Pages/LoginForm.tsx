@@ -2,22 +2,21 @@ import { PATH_ROUTES } from '@/modules/Router/constants';
 import { Spinner } from '@/Shared/Components';
 import { theme } from '@/theme';
 import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Link,
-  TextField,
-  Typography,
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Link,
+    TextField,
+    Typography,
 } from '@mui/material';
 import { LogIn } from 'lucide-react';
 import React, { useState, useTransition } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-import { v4 } from 'uuid';
 import { ERROR_MESSAGES } from '../constants';
-import { useAuthStore, useAuthStoreLocalStorage } from '../store/authStore';
-import { getAuthErrorMessage, isValidEmail, isValidPassword, validateLoginHandler } from '../utils';
+import { useAuthHook } from '../hooks/useAuthHook';
+import { getAuthErrorMessage, isValidEmail, isValidPassword } from '../utils';
 
 /***
  * TODO: DO SOME RESEARCH + TRY TO IMPLEMENT
@@ -28,10 +27,10 @@ import { getAuthErrorMessage, isValidEmail, isValidPassword, validateLoginHandle
 */
 
 const LoginForm: React.FC = () => {
-  const { setUser } = useAuthStoreLocalStorage();
-  const { setUser: setUserLocal } = useAuthStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { loginHandler } = useAuthHook();
+
   const [errorMessage, setErrorMessage] = useState<string | null>('');
   const [isPending, startTransition] = useTransition();
 
@@ -45,29 +44,15 @@ const LoginForm: React.FC = () => {
     };
 
     startTransition(async () => {
-      const getUser = await validateLoginHandler({ email, password });
+      const data = await loginHandler({ email, password, remember });
 
-      if (getUser.user) {
-        if (remember) {
-          setUser({
-            email,
-            password,
-            session: v4(),
-          });
-        }
-
-        setUserLocal({
-          email,
-          password,
-          session: v4(),
-        });
-
+      if (data.user) {
         toast('Login successfully', { type: 'success' });
       }
 
-      if (getUser.error) {
-        setErrorMessage(getUser.error);
-        toast(getUser.error, { type: 'error' });
+      if (data.error) {
+        setErrorMessage(data.error);
+        toast(data.error, { type: 'error' });
       }
     });
   };
