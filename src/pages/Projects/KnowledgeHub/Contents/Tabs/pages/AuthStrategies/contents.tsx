@@ -1,6 +1,7 @@
 import { PageContentI } from '@/pages/Projects/KnowledgeHub/interfaces';
 import { AuthVsAuthorization, CommonAuthFlows, WhatIsAuth } from './01.Introduction/Examples';
 import { PasswordAndSalting, StoringUserCredClient } from './02.PasswordBasedAuth/Examples';
+import { IntroductionToJWT } from './03.TokenBasedAuthWithJWT/Examples';
 
 const INTRODUCTION_TO_AUTH_PAGE_CONTENTS: PageContentI[] = [
   {
@@ -33,4 +34,16 @@ const PASSWORD_BASED_AUTH_PAGE_CONTENTS: PageContentI[] = [
   },
 ];
 
-export { INTRODUCTION_TO_AUTH_PAGE_CONTENTS, PASSWORD_BASED_AUTH_PAGE_CONTENTS };
+const TOKEN_BASED__AUTH_WITH_JWT_CONTENTS: PageContentI[] = [
+  {
+    elementId: 'introduction-to-jwt-example-id',
+    title: 'Introduction To JWT',
+    children: <IntroductionToJWT />,
+  },
+];
+
+export {
+  INTRODUCTION_TO_AUTH_PAGE_CONTENTS,
+  PASSWORD_BASED_AUTH_PAGE_CONTENTS,
+  TOKEN_BASED__AUTH_WITH_JWT_CONTENTS,
+};

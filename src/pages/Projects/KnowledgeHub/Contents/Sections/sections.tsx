@@ -1,5 +1,9 @@
 import { TabContentI } from '../../interfaces';
-import { IntroductionAuthContent, PasswordBasedAuthContent } from '../Tabs/pages/AuthStrategies';
+import {
+  IntroductionAuthContent,
+  PasswordBasedAuthContent,
+  TokenBasedAuthWithJWTContent,
+} from '../Tabs/pages/AuthStrategies';
 import { ReferenceValuesWithRefContent } from '../Tabs/pages/EscapeHatches';
 import {
   UseActionStateContent,
@@ -128,6 +132,11 @@ const AUTH_STRATEGIES_TABS_PAGES: TabContentI[] = [
     title: '02 Password based Auth',
     variant: 'AUTH_STRATEGIES',
     children: <PasswordBasedAuthContent />,
+  },
+  {
+    title: '03 Token Based Auth With Jwt',
+    variant: 'AUTH_STRATEGIES',
+    children: <TokenBasedAuthWithJWTContent />,
   },
 ];
 
