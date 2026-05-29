@@ -1,5 +1,6 @@
 import { PATH_ROUTES } from '@/modules/Router/constants';
 import { OPTIONS_APP_MENU_TYPE, URL_QUERY_TYPE } from '@/pages/Projects/KnowledgeHub/constants';
+import { DAYTIME } from './constants';
 
 export type CustomColorI = Record<string, string>;
 export type SearchQueryParamsT = 'openAll' | 'fullMode';
@@ -23,3 +24,4 @@ export interface ProjectI {
 
 export type UseUrlQueryParamsReturnType = (typeof URL_QUERY_TYPE)[keyof typeof URL_QUERY_TYPE];
 export type OptionsAppMenuType = (typeof OPTIONS_APP_MENU_TYPE)[keyof typeof OPTIONS_APP_MENU_TYPE];
+export type DaytimeType = (typeof DAYTIME)[keyof typeof DAYTIME];

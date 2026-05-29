@@ -1,3 +1,4 @@
+import { getRandomArbitrary } from '@/Shared/Utils/Helpers/global-utils';
 import {
   EMAIL_REGEX,
   ERROR_MESSAGES,
@@ -73,10 +74,6 @@ const getAuthErrorMessage = (password: string): string | null => {
     return ERROR_MESSAGES.PASSWORD_SPECIAL_CHAR_REGEX;
   return null;
 };
-
-function getRandomArbitrary(min: number, max: number) {
-  return Math.random() * (max - min) + min;
-}
 
 const generateUserId = () => {
   const random = Array.from(Array(10))
