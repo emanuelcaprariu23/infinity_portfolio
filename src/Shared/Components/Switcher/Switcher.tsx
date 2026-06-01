@@ -16,13 +16,16 @@ interface Props {
 const Switcher: React.FC<Props> = ({ isSwitched, label, setIsSwitched, showIcons }) => {
   const { handleURLQueryParams, hash } = useUrlQueryParams();
 
-  const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setIsSwitched) {
-      const checked = event.target.checked;
-      setIsSwitched(checked);
-      handleURLQueryParams(getDefaultSubTabSelectedIndex(hash), checked);
-    }
-  }, []);
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (setIsSwitched) {
+        const checked = event.target.checked;
+        setIsSwitched(checked);
+        handleURLQueryParams(getDefaultSubTabSelectedIndex(hash), checked);
+      }
+    },
+    [handleURLQueryParams, hash, setIsSwitched],
+  );
 
   return (
     <Box

@@ -30,7 +30,7 @@ export const useUrlQueryParams = () => {
         x.includes(getSectionKey2.at(0) || ''),
       );
 
-      console.log({ ALL_SECTIONS_ARRAY, validateSectionName, getSectionKey2 });
+      // console.log({ ALL_SECTIONS_ARRAY, validateSectionName, getSectionKey2 });
       if (validateSectionName) {
         const subSectionsArray = ALL_SECTIONS_ARRAY[validateSectionName as LearningSectionsType];
         const getSubSection = subSectionsArray[hashValueIndex];
