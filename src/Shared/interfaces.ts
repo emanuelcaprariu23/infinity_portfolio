@@ -10,6 +10,11 @@ export const SearchQueryParamsV = {
   fullMode: 'fullMode',
 } as const satisfies Record<SearchQueryParamsT, SearchQueryParamsT>;
 
+export const MODE_COLOR = {
+  DARK: 'dark',
+  LIGHT: 'light',
+} as const;
+
 export interface UrlQueryType {
   openAll: boolean;
   fullMode: boolean;
@@ -25,3 +30,4 @@ export interface ProjectI {
 export type UseUrlQueryParamsReturnType = (typeof URL_QUERY_TYPE)[keyof typeof URL_QUERY_TYPE];
 export type OptionsAppMenuType = (typeof OPTIONS_APP_MENU_TYPE)[keyof typeof OPTIONS_APP_MENU_TYPE];
 export type DaytimeType = (typeof DAYTIME)[keyof typeof DAYTIME];
+export type ModeColorType = (typeof MODE_COLOR)[keyof typeof MODE_COLOR];

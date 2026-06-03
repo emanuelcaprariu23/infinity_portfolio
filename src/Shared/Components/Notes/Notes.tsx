@@ -5,9 +5,14 @@ import { SxProps } from '@mui/material/styles';
 import React from 'react';
 import { NotesType } from './interfaces';
 
+interface ContainerProps {
+  parentSx?: SxProps<Theme>;
+  hideNote?: boolean;
+}
 interface NotesProps {
   notes: NotesType;
   specialNotes?: boolean;
+  container?: ContainerProps;
 }
 
 const specialNoteStyle = {
@@ -24,10 +29,14 @@ const defaultNoteStyle = {
   color: '#081C15',
 } as SxProps<Theme>;
 
-const Notes: React.FC<NotesProps> = ({ notes, specialNotes = false }) => {
+const Notes: React.FC<NotesProps> = ({ notes, specialNotes = false, container }) => {
+  const { hideNote, parentSx } = container ?? {};
+
+  const mergedSx = { ...(specialNotes ? specialNoteStyle : defaultNoteStyle), ...parentSx };
+
   return (
-    <BoxCardContent sx={specialNotes ? specialNoteStyle : defaultNoteStyle}>
-      <h2>Note</h2>
+    <BoxCardContent sx={mergedSx}>
+      {!hideNote && <h2>Note</h2>}
       {Array.isArray(notes) ? (
         notes.map((note, index) => (
           <ul key={index}>
@@ -51,7 +60,16 @@ const Notes: React.FC<NotesProps> = ({ notes, specialNotes = false }) => {
               <BoxCardContent sx={{ paddingLeft: '20px', paddingTop: '10px' }}>
                 <ul>
                   {note.subNotes.map((subNote, subIndex) => (
-                    <li key={`${index}-${subIndex}`}>
+                    <li
+                      key={`${index}-${subIndex}`}
+                      style={
+                        subNote.hideList
+                          ? {
+                              listStyle: 'none',
+                            }
+                          : undefined
+                      }
+                    >
                       {typeof subNote === 'string' ? subNote : subNote.note}
                     </li>
                   ))}

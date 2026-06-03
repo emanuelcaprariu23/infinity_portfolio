@@ -115,18 +115,120 @@ const IntroductionToJWT: React.FC = () => {
                       subNotes: [
                         {
                           note: (
-                            <span>
-                              <b>Header: </b>{' '}
-                              {`Contains metadata about the token, such as the type of token (JWT) and the signing algorithm used.`}
-                            </span>
+                            <FlexWithGapBox>
+                              <span>
+                                <b>Header: </b>{' '}
+                                {`Contains metadata about the token, such as the type of token (JWT) and the signing algorithm used.`}
+                              </span>
+                              <Typography variant="h6">
+                                The header typically consists of two parts:
+                              </Typography>
+                              <ul>
+                                <li>the type of the token, which is JWT</li>
+                                <li>
+                                  the hashing algorithm being used, such as HMAC SHA256, RSA, or
+                                  ECDSA
+                                </li>
+                              </ul>
+                            </FlexWithGapBox>
                           ),
                         },
                         {
                           note: (
-                            <span>
-                              <b>Payload:</b>{' '}
-                              {`Contains the claims, which are statements about the user or entity.`}
-                            </span>
+                            <FlexWithGapBox>
+                              <span>
+                                <b>Payload:</b>{' '}
+                                {`Contains the claims, which are statements about the user or entity  and additional data.`}
+                              </span>
+                              <Typography variant="h6">There are three types of claims:</Typography>
+                              <ul>
+                                <li>registered</li>
+                                <li>public</li>
+                                <li>private </li>
+                              </ul>
+                              <Typography variant="h6">Types of Claims:</Typography>
+                              <Notes
+                                container={{
+                                  hideNote: true,
+                                  parentSx: {
+                                    padding: '10px',
+                                  },
+                                }}
+                                notes={[
+                                  {
+                                    note: (
+                                      <FlexWithGapBox>
+                                        <Typography variant="h6">Registered Claims</Typography>
+                                        <ul>
+                                          <li>
+                                            <b>iss</b> (Issuer): Identifies the entity that issued
+                                            the JWT.
+                                          </li>
+                                          <li>
+                                            <b>sub</b> (Subject): Identifies the subject of the JWT
+                                            (e.g., the user ID).
+                                          </li>
+                                          <li>
+                                            <b>aud</b> (Audience): Identifies the intended
+                                            recipient(s) of the JWT.
+                                          </li>
+                                          <li>
+                                            <b>exp</b> (Expiration Time): Identifies the time after
+                                            which the JWT is no longer valid.
+                                          </li>
+                                          <li>
+                                            <b>nbf</b> (Not Before): Identifies the time before
+                                            which the JWT must not be accepted for processing.
+                                          </li>
+                                          <li>
+                                            <b>iat</b> (Issued At): Identifies the time at which the
+                                            JWT was issued.
+                                          </li>
+                                          <li>
+                                            <b>jti</b> (JWT ID): A unique identifier for the JWT.
+                                          </li>
+                                        </ul>
+                                      </FlexWithGapBox>
+                                    ),
+                                    hideList: true,
+                                    orderedList: false,
+                                  },
+                                  {
+                                    note: (
+                                      <FlexWithGapBox>
+                                        <Typography variant="h6">Public Claims</Typography>
+                                        <Typography variant="subtitle2">
+                                          These are claims that are defined in the IANA JSON Web
+                                          Token Registry or are defined as a URI that contains a
+                                          collision resistant namespace. These claims can be used by
+                                          anyone
+                                        </Typography>
+                                        <Typography variant="subtitle2">
+                                          {`Example: A company might define a public claim https://example.com/role to store user roles. This claim is publicly defined and can be used by anyone who understands the context of the claim`}
+                                        </Typography>
+                                      </FlexWithGapBox>
+                                    ),
+                                    hideList: true,
+                                    orderedList: false,
+                                  },
+                                  {
+                                    note: (
+                                      <FlexWithGapBox>
+                                        <Typography variant="h6">Private Claims</Typography>
+                                        <Typography variant="subtitle2">
+                                          {`These are custom claims that are defined by the application. They are used to store application-specific information.`}
+                                        </Typography>
+                                        <Typography variant="subtitle2">
+                                          {`Example: A task management application might use a private claim called team_id to store the ID of the team the user belongs to.`}
+                                        </Typography>
+                                      </FlexWithGapBox>
+                                    ),
+                                    hideList: true,
+                                    orderedList: false,
+                                  },
+                                ]}
+                              />
+                            </FlexWithGapBox>
                           ),
                         },
                         {
