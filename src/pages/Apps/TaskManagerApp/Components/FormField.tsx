@@ -39,7 +39,7 @@ const FormField: React.FC<FormFieldProps> = ({ field, label, error, required, ty
           onMouseDown={handleMouseDownPassword}
           edge="end"
         >
-          {showPassword ? <VisibilityOff /> : <Visibility />}
+          {showPassword ? <Visibility /> : <VisibilityOff />}
         </IconButton>
       </InputAdornment>
     ),

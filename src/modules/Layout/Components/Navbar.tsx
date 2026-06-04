@@ -18,7 +18,6 @@ export const Navbar = () => {
   // you can use useTransition to defer the navigation update, allowing the UI to remain responsive during the transition
   const [value, setValue] = useState<string>(currentPathDefault(pathname.split('/')));
 
-  console.log({ value });
   const navigate = useNavigate();
 
   const handleChange = (_: React.SyntheticEvent, newValue: string) => {

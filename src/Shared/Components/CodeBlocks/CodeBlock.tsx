@@ -64,7 +64,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       content: (
         <>
           {`{`}
-          <span style={{ paddingLeft: '10px' }}>{jsonContent}</span>
+          <span style={{ paddingLeft: '10px', position: 'relative' }}>{jsonContent}</span>
           {`}`}
         </>
       ),
@@ -119,6 +119,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           paddingLeft: '10px',
           borderRadius: '10px',
           letterSpacing: '2px',
+          width: 'auto',
         }}
       >
         <Typography>{formatType}</Typography>
@@ -132,11 +133,12 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       <Typography
         component="pre"
         style={{
-          whiteSpace: 'pre-wrap',
+          whiteSpace: 'pre',
           fontFamily: 'monospace',
           padding: '10px 20px 20px',
           color: container.color,
           display: 'flex',
+          overflowX: 'auto',
           flexDirection: 'column',
         }}
       >
@@ -170,7 +172,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         padding: '0',
         backgroundColor: container.backgroundColor,
         display: !text && children ? 'inline-flex' : 'block',
-        width: !text ? 'fit-content' : '100%',
+        flexDirection: !text && children ? 'row' : 'column',
+        width: !text && children ? 'fit-content' : '100%',
       }}
     >
       {finalContent}
