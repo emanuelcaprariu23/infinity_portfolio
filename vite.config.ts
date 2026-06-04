@@ -8,7 +8,7 @@ export default defineConfig({
   base: './',
   plugins: [react(), viteTsconfigPaths()],
   server: {
-    port: 3000,
+    port: 3002,
     //   headers: {
     //   'Content-Security-Policy': [
     //     "default-src 'self'",

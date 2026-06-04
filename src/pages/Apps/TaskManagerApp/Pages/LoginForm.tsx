@@ -1,58 +1,83 @@
 import { PATH_ROUTES } from '@/modules/Router/constants';
 import { Spinner } from '@/Shared/Components';
+import { SpaceBetweenRowBox } from '@/Shared/Utils/Helpers/styled-components';
 import { theme } from '@/theme';
-import {
-    Box,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    Link,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Box, Button, Checkbox, FormControlLabel, Link, Typography } from '@mui/material';
 import { LogIn } from 'lucide-react';
-import React, { useState, useTransition } from 'react';
+import React, { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-import { ERROR_MESSAGES } from '../constants';
+import FormField from '../Components/FormField';
 import { useAuthHook } from '../hooks/useAuthHook';
-import { getAuthErrorMessage, isValidEmail, isValidPassword } from '../utils';
+import { LoginDataT, loginSchema } from '../interfaces';
 
 /***
  * TODO: DO SOME RESEARCH + TRY TO IMPLEMENT
  * 1. HTTPS Simulation: If you're working on a local development environment, simulate HTTPS by setting up a self-signed certificate. This will allow you to test your application with HTTPS enabled.
  * 2. CSP Implementation: Research Content Security Policy (CSP) and implement a basic CSP in a test HTML file to restrict script sources. Experiment with different CSP directives to understand how they affect the loading of resources.
- * 3. ADD ZOD VALIDATION + REACT HOOK FORM
+ */
 
-*/
+const defaultLoginValues: LoginDataT = {
+  email: '',
+  password: '',
+  rememberMe: true,
+};
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { loginHandler } = useAuthHook();
+  const { loginHandler, loginWithJWTHandler } = useAuthHook();
 
-  const [errorMessage, setErrorMessage] = useState<string | null>('');
   const [isPending, startTransition] = useTransition();
 
-  const submitHandler = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const { email, password, remember } = {
-      email: formData.get('email')?.toString() || '',
-      password: formData.get('password')?.toString() || '',
-      remember: formData.get('rememberMe') === 'on',
-    };
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm<LoginDataT>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: defaultLoginValues,
+    shouldFocusError: false,
+  });
 
+  const submitHandler = ({ email, password, rememberMe }: LoginDataT) => {
     startTransition(async () => {
-      const data = await loginHandler({ email, password, remember });
+      const data = await loginHandler({ email, password, remember: !!rememberMe });
 
       if (data.user) {
         toast('Login successfully', { type: 'success' });
       }
 
       if (data.error) {
-        setErrorMessage(data.error);
+        setError('form', { type: 'manual', message: data.error });
         toast(data.error, { type: 'error' });
+      }
+    });
+  };
+
+  const submitJWTVariantHandler = ({ email, password, rememberMe }: LoginDataT) => {
+    startTransition(async () => {
+      const data = await loginWithJWTHandler({
+        email,
+        password,
+        remember: !!rememberMe,
+      });
+
+      const result = await data.json();
+
+      if (data.status === 200 && result.token) {
+        console.log('Received JWT:', result.token);
+        toast('Login successfully', { type: 'success' });
+        return;
+      }
+
+      if (result.message) {
+        setError('form', { type: 'manual', message: result.message });
+        toast(result.message, { type: 'error' });
       }
     });
   };
@@ -67,32 +92,12 @@ const LoginForm: React.FC = () => {
     navigate(`${PATH_ROUTES.REGISTER_PAGE}`, {});
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
-    const { name, value } = e.target;
-    setErrorMessage(null);
-
-    if (name === 'email') {
-      if (!isValidEmail(value)) {
-        setErrorMessage(ERROR_MESSAGES.EMAIL_NOT_VALID);
-      }
-      return;
-    }
-
-    if (name === 'password') {
-      if (!isValidPassword(value)) {
-        const getMessage = getAuthErrorMessage(value);
-        setErrorMessage(getMessage);
-      }
-      return;
-    }
-  };
-
   return (
     <div style={{ display: 'flex', flexGrow: 1 }}>
       <form
         method="post"
         action=""
-        onSubmit={submitHandler}
+        onSubmit={handleSubmit(submitHandler)}
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -118,7 +123,7 @@ const LoginForm: React.FC = () => {
               alignItems: 'center',
             }}
           >
-            {errorMessage && (
+            {errors.form && (
               <div
                 style={{
                   display: 'flex',
@@ -131,11 +136,11 @@ const LoginForm: React.FC = () => {
                   variant="h6"
                   sx={{ color: theme.palette.error.main, fontSize: '14px', fontWeight: 'bold' }}
                 >
-                  {errorMessage}
+                  {errors.form.message}
                 </Typography>
               </div>
             )}
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+            {/* <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
               <Typography>Email</Typography>
               <TextField
                 type={'email'}
@@ -144,17 +149,25 @@ const LoginForm: React.FC = () => {
                 onChange={onChange}
                 disabled={isPending}
               />
-            </div>
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-              <Typography>Password</Typography>
-              <TextField
-                type={'password'}
-                name="password"
-                onChange={onChange}
-                disabled={isPending}
-                autoComplete="off"
-              />
-            </div>
+            </div> */}
+
+            <FormField
+              field={register('email')}
+              label={'Email'}
+              required
+              disabled={isPending}
+              error={errors.email?.message}
+              type={'email'}
+            />
+            <FormField
+              field={register('password')}
+              label={'Password'}
+              required
+              disabled={isPending}
+              error={errors.password?.message}
+              type={'password'}
+            />
+
             <div
               style={{
                 display: 'flex',
@@ -163,6 +176,7 @@ const LoginForm: React.FC = () => {
                 justifyContent: 'space-between',
                 alignContent: 'center',
                 alignItems: 'center',
+                paddingLeft: '20px',
               }}
             >
               <div
@@ -183,7 +197,9 @@ const LoginForm: React.FC = () => {
                   {`  Don't have an account? register now`}
                 </Link>
                 <FormControlLabel
-                  control={<Checkbox name="rememberMe" defaultChecked disabled={isPending} />}
+                  control={
+                    <Checkbox defaultChecked disabled={isPending} {...register('rememberMe')} />
+                  }
                   label="Remember me"
                 />
               </div>
@@ -202,16 +218,30 @@ const LoginForm: React.FC = () => {
               </div>
             </div>
 
-            <div>
+            <SpaceBetweenRowBox sx={{ width: '100%', justifyContent: 'center' }}>
               <Button
                 type="submit"
                 variant={'contained'}
                 disabled={isPending}
                 sx={{ display: 'flex', flexDirection: 'row', gap: '5px', alignItems: 'center' }}
               >
-                {isPending ? <Spinner size={'1.2em'} /> : <LogIn size={'1.2em'} />} Login
+                {isPending || isSubmitting ? <Spinner size={'1.2em'} /> : <LogIn size={'1.2em'} />}{' '}
+                Login
               </Button>
-            </div>
+              <Button
+                type="button"
+                onClick={ev => {
+                  ev.preventDefault();
+                  submitJWTVariantHandler(getValues());
+                }}
+                variant={'contained'}
+                disabled={isPending}
+                sx={{ display: 'flex', flexDirection: 'row', gap: '5px', alignItems: 'center' }}
+              >
+                {isSubmitting ? <Spinner size={'1.2em'} /> : <LogIn size={'1.2em'} />} Login With
+                JWT
+              </Button>
+            </SpaceBetweenRowBox>
           </Box>
         </div>
       </form>

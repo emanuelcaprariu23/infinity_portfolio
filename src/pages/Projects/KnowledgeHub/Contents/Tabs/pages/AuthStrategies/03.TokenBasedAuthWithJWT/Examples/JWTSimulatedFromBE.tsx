@@ -70,8 +70,8 @@ const JWTSimulatedFromBE: React.FC = () => {
                             <li>
                               <strong>Responds to Frontend:</strong> Finally, the backend sends an
                               HTTP response back to the frontend. This response typically includes
-                              the generated JWT and a success status code. If the credentials were
-                              invalid, it would send an error status code (like{' '}
+                              the generated JWT and a success status CodeBlock. If the credentials
+                              were invalid, it would send an error status CodeBlock (like{' '}
                               <CodeBlock>401 Unauthorized</CodeBlock>) and an error message.
                             </li>
                           </ol>
@@ -101,28 +101,44 @@ const JWTSimulatedFromBE: React.FC = () => {
                   notes={[
                     {
                       note: (
-                        <FlexWithGapBox>
+                        <FlexWithGapBox sx={{ width: '100%' }}>
                           <Typography variant="h6">Expected Success Response</Typography>
 
                           <Typography variant="subtitle1">
                             Upon successful authentication, the backend typically responds with an
-                            HTTP status code of <CodeBlock>200 OK</CodeBlock>. The response body
-                            will be a JSON object, and crucially, it will contain the JWT. The exact
-                            key for the JWT in the JSON object can vary, but{' '}
+                            HTTP status CodeBlock of <CodeBlock>200 OK</CodeBlock>. The response
+                            body will be a JSON object, and crucially, it will contain the JWT. The
+                            exact key for the JWT in the JSON object can vary, but{' '}
                             <CodeBlock>token</CodeBlock> or <CodeBlock>accessToken</CodeBlock> are
                             common.
                           </Typography>
-                          <div style={{ display: 'flex', minWidth: 0, overflow: 'auto' }}>
-                            <CodeBlock
-                              darkMode
-                              text={`
+
+                          <CodeBlock
+                            darkMode
+                            text={`
                         {
                             "message": "Login successful!",
                             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhYmMxMjMiLCJ1c2VybmFtZSI6ImFsaWNlIiwiaWF0IjoxNjQ3NjgyMjAwLCJleHAiOjE2NDc2ODU4MDB9.some-signature-string-here"
                         }
                             `}
-                            />
-                          </div>
+                          />
+                          <Typography variant="h6">Expected Error Response</Typography>
+                          <Typography variant="subtitle1">
+                            A common status CodeBlock for invalid credentials is{' '}
+                            <CodeBlock>401 Unauthorized</CodeBlock> or{' '}
+                            <CodeBlock>400 Bad Request</CodeBlock>. The response body would also be
+                            a JSON object, but instead of a token, it would contain an error
+                            message.
+                          </Typography>
+                          <CodeBlock
+                            darkMode
+                            text={`
+                       {
+                          "error": "Authentication failed",
+                          "details": "User not found or password incorrect"
+                        }
+                            `}
+                          />
                         </FlexWithGapBox>
                       ),
                       hideList: true,

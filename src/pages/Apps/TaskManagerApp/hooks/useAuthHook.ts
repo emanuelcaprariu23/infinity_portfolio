@@ -1,6 +1,10 @@
 import { useTransition } from 'react';
 import { v4 } from 'uuid';
-import { validateLoginHandler, validateRegisterHandler } from '../api/authApi';
+import {
+  loginHandlerWithJWTSimulation,
+  validateLoginHandler,
+  validateRegisterHandler,
+} from '../api/authApi';
 import { useAuthStore, useAuthStoreLocalStorage, User } from '../store/authStore';
 import { generateUserId } from '../utils';
 
@@ -25,6 +29,41 @@ const useAuthHook = () => {
     remember: boolean;
   }) => {
     const data = await validateLoginHandler({ email, password });
+
+    if (data.user) {
+      if (remember) {
+        setUser({
+          email,
+          password,
+          session: v4(),
+          isVerified: true,
+        });
+      }
+
+      setUserLocal({
+        email,
+        password,
+        session: v4(),
+        isVerified: true,
+      });
+
+      validateUser(true);
+      updateValidationCode('');
+    }
+
+    return data;
+  };
+
+  const loginWithJWTHandler = async ({
+    email,
+    password,
+    remember,
+  }: {
+    email: string;
+    password: string;
+    remember: boolean;
+  }) => {
+    const data = await loginHandlerWithJWTSimulation({ email, password });
 
     if (data.user) {
       if (remember) {
@@ -83,7 +122,14 @@ const useAuthHook = () => {
 
   const user = storageUser || localUser;
 
-  return { loginHandler, registerHandler, logoutHandler, isPendingLogout, user };
+  return {
+    loginHandler,
+    loginWithJWTHandler,
+    registerHandler,
+    logoutHandler,
+    isPendingLogout,
+    user,
+  };
 };
 
 export { useAuthHook };

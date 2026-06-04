@@ -57,7 +57,6 @@ const createAuthStore = (set: any, get: any): AuthState => ({
   validateUser: (value: boolean) => {
     set(
       produce((draft: AuthState) => {
-        console.log(draft);
         if (draft.user) {
           draft.user.isVerified = value;
         }
