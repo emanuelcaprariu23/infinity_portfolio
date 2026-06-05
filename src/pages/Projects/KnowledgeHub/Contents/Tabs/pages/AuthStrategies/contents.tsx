@@ -5,6 +5,7 @@ import {
   IntroductionToJWT,
   JWTSimulatedFromBE,
   JWTStructureAndClaims,
+  StoringJWTSecurelyInBrowser,
 } from './03.TokenBasedAuthWithJWT/Examples';
 
 const INTRODUCTION_TO_AUTH_PAGE_CONTENTS: PageContentI[] = [
@@ -53,6 +54,11 @@ const TOKEN_BASED__AUTH_WITH_JWT_CONTENTS: PageContentI[] = [
     elementId: 'jwt-simulated-from-be-example-id',
     title: `JWT Simulated from Backend`,
     children: <JWTSimulatedFromBE />,
+  },
+  {
+    elementId: 'storing-jwt-securely-in-browser-example-id',
+    title: `Storing JWTs Securely in the Browser (localStorage vs. Cookies)`,
+    children: <StoringJWTSecurelyInBrowser />,
   },
 ];
 

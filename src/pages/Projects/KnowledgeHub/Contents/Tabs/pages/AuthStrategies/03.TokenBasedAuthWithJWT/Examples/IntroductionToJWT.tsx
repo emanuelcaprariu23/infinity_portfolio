@@ -1,3 +1,4 @@
+import CodeBlock from '@/Shared/Components/CodeBlocks/CodeBlock';
 import MultipleDefContent from '@/Shared/Components/CodeBlocks/MultipleDefContent';
 import Notes from '@/Shared/Components/Notes/Notes';
 import { BoxCardContent, FlexWithGapBox } from '@/Shared/Utils/Helpers/styled-components';
@@ -238,14 +239,14 @@ const IntroductionToJWT: React.FC = () => {
                                 <b>Signature:</b>{' '}
                                 {` Used to verify that the token has not been tampered with and that it was issued by a trusted source`}
                               </span>
-                              <Typography variant="subtitle1">
-                                {`
+                              <CodeBlock
+                                text={`
                               HMACSHA256(
                                 base64UrlEncode(header) + "." +
                                 base64UrlEncode(payload),
                                 secret)
                               `}
-                              </Typography>
+                              />
                             </FlexWithGapBox>
                           ),
                         },

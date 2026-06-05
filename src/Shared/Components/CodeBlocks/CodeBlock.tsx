@@ -17,13 +17,20 @@ interface FontColorT {
   color: string;
 }
 
-const styles: Record<ModeColorType, { container: FontColorT; label: FontColorT }> = {
+const styles: Record<
+  ModeColorType,
+  { container: FontColorT; label: FontColorT; text: FontColorT }
+> = {
   dark: {
     container: {
       backgroundColor: theme.custom.specialPalette?.variant[600],
       color: theme.palette.primary.light,
     },
     label: {
+      backgroundColor: theme.custom.specialPalette?.variant[500],
+      color: theme.palette.info.contrastText,
+    },
+    text: {
       backgroundColor: theme.custom.specialPalette?.variant[500],
       color: theme.palette.info.contrastText,
     },
@@ -34,6 +41,10 @@ const styles: Record<ModeColorType, { container: FontColorT; label: FontColorT }
       color: theme.palette.action.active,
     },
     label: {
+      backgroundColor: theme.custom.specialPalette?.variant[200],
+      color: theme.palette.info.dark,
+    },
+    text: {
       backgroundColor: theme.custom.specialPalette?.variant[200],
       color: theme.palette.info.dark,
     },
@@ -57,7 +68,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const mode = darkMode ? MODE_COLOR.DARK : MODE_COLOR.LIGHT;
   const style = styles[mode];
 
-  const { container, label } = style;
+  const { container, label, text: textStyle } = style;
 
   const formatContent: Record<FormatType, { content: JSX.Element; textToCopy: string }> = {
     json: {
@@ -151,7 +162,12 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
     children && children?.toString().length > 0 ? (
       <Typography
         component="span"
-        sx={{ padding: '0 10px', display: 'inline-flex', flexDirection: 'row' }}
+        sx={{
+          padding: '0 10px',
+          display: 'inline-flex',
+          flexDirection: 'row',
+          color: textStyle.color,
+        }}
       >
         {children.toString()}
       </Typography>
@@ -170,7 +186,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         borderRadius: '10px',
         boxShadow: theme.custom.boxShadows?.main,
         padding: '0',
-        backgroundColor: container.backgroundColor,
+        backgroundColor: !text && children ? textStyle.backgroundColor : container.backgroundColor,
         display: !text && children ? 'inline-flex' : 'block',
         flexDirection: !text && children ? 'row' : 'column',
         width: !text && children ? 'fit-content' : '100%',
