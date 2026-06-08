@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormRegister } from 'react-hook-form';
-import FormField from '../../../../Auth/Components/FormField';
+import FormField from '../../../Auth/Components/FormField';
 import { CheckoutFormData, GENDER_OPTIONS } from './checkoutSchema';
 
 interface StepUserDataProps {

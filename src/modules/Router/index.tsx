@@ -53,7 +53,7 @@ const TaskManagerApp = lazy(() =>
 );
 const EcommerceApp = lazy(() =>
   import('@/pages/Apps/index.js').then(module => ({
-    default: module.MultipleStepsClaude,
+    default: module.InfinityEshop,
   })),
 );
 

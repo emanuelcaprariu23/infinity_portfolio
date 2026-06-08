@@ -2,7 +2,7 @@ import { CreditCard, Lock } from '@mui/icons-material';
 import { Box, Divider, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import FormField from '../../../../Auth/Components/FormField';
+import FormField from '../../../Auth/Components/FormField';
 import { CheckoutFormData, MOCK_CART_ITEMS } from './checkoutSchema';
 
 interface StepPaymentProps {

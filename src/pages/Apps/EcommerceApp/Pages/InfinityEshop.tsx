@@ -3,15 +3,10 @@ import { CheckCircle } from '@mui/icons-material';
 import { Box, Button, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { FieldPath, useForm } from 'react-hook-form';
-import {
-  CheckoutFormData,
-  checkoutSchema,
-  MOCK_CART_ITEMS,
-  STEPS,
-} from './Pages/Steps/checkoutSchema';
-import StepAddressItems from './Pages/Steps/StepAddressItems';
-import StepPayment from './Pages/Steps/StepPayment';
-import StepUserData from './Pages/Steps/StepUserData';
+import { CheckoutFormData, checkoutSchema, MOCK_CART_ITEMS, STEPS } from '../Steps/checkoutSchema';
+import StepAddressItems from '../Steps/StepAddressItems';
+import StepPayment from '../Steps/StepPayment';
+import StepUserData from '../Steps/StepUserData';
 
 const STEP_FIELDS: Record<number, FieldPath<CheckoutFormData>[]> = {
   0: ['name', 'gender', 'age', 'email'],
@@ -36,7 +31,7 @@ const defaultValues: CheckoutFormData = {
 
 const orderTotal = MOCK_CART_ITEMS.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-const MultipleStepsClaude: React.FC = () => {
+const InfinityEshop: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -166,6 +161,6 @@ const MultipleStepsClaude: React.FC = () => {
   );
 };
 
-MultipleStepsClaude.displayName = 'MultipleStepsClaude';
+InfinityEshop.displayName = 'InfinityEshop';
 
-export { MultipleStepsClaude };
+export { InfinityEshop };
