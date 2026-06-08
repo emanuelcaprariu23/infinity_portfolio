@@ -13,6 +13,7 @@ const NAVBAR_TABS_PAGES = [
   {
     path: convertToPathURI([PATH_ROUTES.APPLICATIONS]),
     displayName: PATH_ROUTES.APPLICATIONS,
+    isProtected: true,
   },
 ] as NavbarTabI[];
 
@@ -40,15 +41,3 @@ const tabSx: SxProps<Theme> = {
 };
 
 export { NAVBAR_TABS_PAGES, tabsSx, tabSx };
-
-// export const NAVBAR_TABS_PAGES = [
-//   { path: '/', displayName: PATH_ROUTES.HOME },
-//   {
-//     path: '/monsters',
-//     displayName: PATH_ROUTES.MONSTERS,
-//   },
-//   {
-//     path: '/games',
-//     displayName: PATH_ROUTES.GAMES,
-//   },
-// ] as NavbarTabI[]

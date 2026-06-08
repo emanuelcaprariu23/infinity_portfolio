@@ -9,6 +9,8 @@ export enum PATH_ROUTES {
   TASK_MANAGER_APP = 'task-manager-app',
   FORGOT_PASSWORD = 'forgot-password',
   REGISTER_PAGE = 'register',
+  ECOMMERCE_APP = 'infinity-shopping',
+  LOGIN_PAGE = 'login',
 }
 
 // TODO: ADD PUBLIC + PRIVATE ROUTES

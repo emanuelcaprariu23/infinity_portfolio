@@ -1,4 +1,3 @@
-import { getRandomArbitrary } from '@/Shared/Utils/Helpers/global-utils';
 import {
   EMAIL_REGEX,
   ERROR_MESSAGES,
@@ -9,8 +8,9 @@ import {
   PASSWORD_REGEX,
   PASSWORD_SPECIAL_CHAR_REGEX,
   USERS,
-} from './constants';
-import { User } from './store/authStore';
+} from '@/pages/Auth/constants';
+import { getRandomArbitrary } from '@/Shared/Utils/Helpers/global-utils';
+import { User } from '../../Auth/store/authStore';
 
 const getUserApi = async ({ email, password }: { email: string; password: string }) => {
   const response = await new Promise<{ user: User | undefined; error: null | string }>(resolve => {

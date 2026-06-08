@@ -7,9 +7,9 @@ import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { RegisterDataT, registerSchema } from '../../Apps/TaskManagerApp/interfaces';
 import FormField from '../Components/FormField';
 import { useAuthHook } from '../hooks/useAuthHook';
-import { RegisterDataT, registerSchema } from '../interfaces';
 
 const defaultRegisterValues: RegisterDataT = {
   email: '',

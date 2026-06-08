@@ -1,4 +1,4 @@
-import { useAuthHook } from '@/pages/Apps/TaskManagerApp/hooks/useAuthHook';
+import { useAuthHook } from '@/pages/Auth/hooks/useAuthHook';
 import { theme } from '@/theme';
 import { Avatar, IconButton } from '@mui/material';
 import { UserRound } from 'lucide-react';

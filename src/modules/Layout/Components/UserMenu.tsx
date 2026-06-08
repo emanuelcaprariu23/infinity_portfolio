@@ -1,4 +1,4 @@
-import { useAuthHook } from '@/pages/Apps/TaskManagerApp/hooks/useAuthHook';
+import { useAuthHook } from '@/pages/Auth/hooks/useAuthHook';
 import { Spinner } from '@/Shared/Components';
 import { Logout } from '@mui/icons-material';
 import { Avatar, Backdrop, Divider, ListItemIcon, Menu, MenuItem, Typography } from '@mui/material';

@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES, TASK_MANAGER_APP_LOCAL_STORAGE_KEYS } from '@/pages/Auth/constants';
 import { useLocalStorage } from '@/Shared/Hooks';
 import { FlexWithGapBox } from '@/Shared/Utils/Helpers/styled-components';
 import { theme } from '@/theme';
@@ -5,8 +6,7 @@ import { Box, IconButton, TextField, Typography } from '@mui/material';
 import { SendHorizontal, Trash } from 'lucide-react';
 import React, { startTransition, useOptimistic, useState } from 'react';
 import { toast } from 'react-toastify';
-import { ERROR_MESSAGES, TASK_MANAGER_APP_LOCAL_STORAGE_KEYS } from '../constants';
-import { useAuthHook } from '../hooks/useAuthHook';
+import { useAuthHook } from '../../../Auth/hooks/useAuthHook';
 
 interface Todo {
   id: number;

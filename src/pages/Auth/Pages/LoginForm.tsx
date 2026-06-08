@@ -9,9 +9,9 @@ import React, { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { LoginDataT, loginSchema } from '../../Apps/TaskManagerApp/interfaces';
 import FormField from '../Components/FormField';
 import { useAuthHook } from '../hooks/useAuthHook';
-import { LoginDataT, loginSchema } from '../interfaces';
 
 /***
  * TODO: DO SOME RESEARCH + TRY TO IMPLEMENT
@@ -50,6 +50,8 @@ const LoginForm: React.FC = () => {
 
       if (data.user) {
         toast('Login successfully', { type: 'success' });
+        navigate(`/${PATH_ROUTES.APPLICATIONS}`, { replace: true });
+        return;
       }
 
       if (data.error) {
@@ -251,4 +253,4 @@ const LoginForm: React.FC = () => {
 
 LoginForm.displayName = 'LoginForm';
 
-export default LoginForm;
+export { LoginForm };

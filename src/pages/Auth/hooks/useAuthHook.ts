@@ -4,9 +4,9 @@ import {
   loginHandlerWithJWTSimulation,
   validateLoginHandler,
   validateRegisterHandler,
-} from '../api/authApi';
+} from '../../Apps/TaskManagerApp/api/authApi';
+import { generateUserId } from '../../Apps/TaskManagerApp/utils';
 import { useAuthStore, useAuthStoreLocalStorage, User } from '../store/authStore';
-import { generateUserId } from '../utils';
 
 const useAuthHook = () => {
   const {

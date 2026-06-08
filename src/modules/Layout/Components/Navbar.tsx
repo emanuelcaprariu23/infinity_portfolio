@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/pages/Auth/store/authStore';
 import { theme } from '@/theme';
 import { Tab, Tabs } from '@mui/material';
 import { startTransition, useState } from 'react';
@@ -14,6 +15,8 @@ const currentPathDefault = (pathname: string[]) => {
 
 export const Navbar = () => {
   const { pathname } = useLocation();
+
+  const { user } = useAuthStore();
 
   // you can use useTransition to defer the navigation update, allowing the UI to remain responsive during the transition
   const [value, setValue] = useState<string>(currentPathDefault(pathname.split('/')));
@@ -44,6 +47,11 @@ export const Navbar = () => {
         sx={{ ...tabsSx }}
       >
         {NAVBAR_TABS_PAGES.map(x => {
+          if (user) {
+            if (x.isProtected)
+              return <Tab label={x.displayName} key={x.path} value={x.path} sx={{ ...tabSx }} />;
+          }
+
           return <Tab label={x.displayName} key={x.path} value={x.path} sx={{ ...tabSx }} />;
         })}
       </Tabs>

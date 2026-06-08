@@ -23,4 +23,9 @@ export const APPLICATIONS_CONTENTS = [
       'This app has reference with projects/knowledge_hub#auth-strategies-roadmap project',
     projectId: v4(),
   },
+  {
+    title: 'Ecommerce App',
+    route: PATH_ROUTES.ECOMMERCE_APP,
+    projectId: v4(),
+  },
 ] as ProjectI[];

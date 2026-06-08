@@ -1,11 +1,11 @@
-import { z } from 'zod';
 import {
   ERROR_MESSAGES,
   PASSWORD_ERROR_MESSAGES,
   PASSWORD_LETTER_REGEX,
   PASSWORD_SPECIAL_CHAR_REGEX,
   PASSWORD_STRENGTH,
-} from './constants';
+} from '@/pages/Auth/constants';
+import z from 'zod';
 
 const loginSchema = z.object({
   email: z.email(ERROR_MESSAGES.EMAIL_NOT_VALID),

@@ -2,7 +2,7 @@ import { getTimeOfDay } from '@/Shared/Utils/Helpers/global-utils';
 import { theme } from '@/theme';
 import { Typography } from '@mui/material';
 import React from 'react';
-import { useAuthHook } from '../hooks/useAuthHook';
+import { useAuthHook } from '../../../Auth/hooks/useAuthHook';
 
 const WelcomeHead: React.FC = () => {
   const { user } = useAuthHook();
